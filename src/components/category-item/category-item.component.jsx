@@ -20,7 +20,7 @@ const CategoryItem = ({ category }) => {
 
 export default CategoryItem;
 
-//* explanation of React style names
+//* explanation of React style property naming convention
 // normal css for setting background-image:  
 // body {
 //  background-image: url("paper.gif");
