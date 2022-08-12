@@ -29,10 +29,10 @@ export default CategoryItem;
 // inline style settting
 // style="background-image: url(https://i.ibb.co/R70vBrQ/men.png)"
 
-//React styling
+//*React styling with a style object
 // The style attribute accepts a JavaScript object with camelCased properties 
 //rather than a CSS string. This is consistent with the DOM style JavaScript property, 
-//is more efficient, and prevents XSS security holes.For example:
+//is more efficient, and prevents XSS security holes. For example:
 
 // const divStyle = {
 //   backgroundImage: 'url(https://i.ibb.co/R70vBrQ/men.png))',
