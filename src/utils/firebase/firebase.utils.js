@@ -1,7 +1,7 @@
 //See the steps for app setup below this code or go to https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0#web-version-9
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, doc, getDoc, setDoc} from 'firebase/firestore'
 
 //this was setup in the Firebase console
 const firebaseConfig = {
@@ -54,14 +54,16 @@ export const db = getFirestore()
 //choose Cloud Firestore (not Realtime Database): https://firebase.google.com/docs/firestore/manage-data/add-data?hl=en&authuser=0
 //choose Structure data, Add and manage data: [ Add data, Delete data ... ], Read Data and other topics
 //Note use of doc, getDoc, and setDoc from import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
+
 //* start of createUserDocumentFromAuth
-// using doc, setDoc pattern vs addDoc (see urls above)
-//this function is called from the sign-in or sign-up components 
+// uses doc, setDoc pattern vs addDoc (see urls above) 
+//this function is called from the sign-in, sign-up, sign-in-form components 
 //who pass the user object from the response object (UserCredentialImpl) again see below this code
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation ={displayName: 'John Doe'}) => {
   const userDocRef = doc(db, 'users', userAuth.uid); // arguments = (database, name of collection, id = userAuth.uid)
-  //the above code use the user's id (userAuth.uid) to get a reference to a document in the the database with this user's id.
+  //the above code use the user's id (userAuth.uid) to get a reference to a document in the the db
   //But this document has no value (i.e. user data associated with it)
+
   const userSnapshot = await getDoc(userDocRef); //return the data associated this document id
   // even though we have a user id which points to document with this Id, we do not have a user
 
@@ -69,7 +71,6 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     //this code will not run if the user exist in which case we just want to return userDocRef
   if (!userSnapshot.exists()) { 
     const {displayName, email} = userAuth
-    console.log('displayName: ', displayName);
     const createdAt = new Date(); //used in setDoc below
 
     try {
@@ -79,7 +80,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
         createdAt,
         ...additionalInformation
       });
-      console.log(displayName)
+      
     } catch (error) {
       console.log('error creating the user', error.message);
     }
@@ -89,17 +90,27 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
 }; 
 //* end of createUserDocumentFrom Auth
 
+//* called from sign-in-form, sign-up-form components
 export const createAuthUserWithEmailAndPassword = async (email, password)=>{
   if (!email || !password) return;
 
-  return await createUserWithEmailAndPassword(auth, email, password)
+  return await createUserWithEmailAndPassword(auth, email, password) //createUserWithEmailAndPassword ( email :  string ,  password :  string ) : Promise < UserCredential >
 }
-
+//* called from sign-in-form component
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
-  return await signInWithEmailAndPassword(auth, email, password);
+  return await signInWithEmailAndPassword(auth, email, password); //signInWithEmailAndPassword ( email :  string ,  password :  string ) : Promise < UserCredential >
 };
+
+export const signOutUser = async () => await signOut(auth)
+
+
+
+
+
+
+
 
 //* createUserDocumentFromAuth: this is response when called from the sign-up-form.component
   //when used by the sign-up-form.component,

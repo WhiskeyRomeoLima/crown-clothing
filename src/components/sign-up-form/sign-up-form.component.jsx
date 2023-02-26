@@ -1,9 +1,15 @@
 //import { signInWithEmailLink } from 'firebase/auth';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
+import {UserContext} from '../../contexts/user.context'
 import './sign-up-form.styles.scss';
 import Button from '../button/button.component';
+
+//section 7, lesson 106 - added useContext to import from react
+//and imported the UserContext object from user.context.jsx
+
+
 
 const defaultFormFields = {
   displayName: '',
@@ -15,10 +21,13 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields); // sets the formFields to initial state
   const { displayName, email, password, confirmPassword } = formFields; //  object destructuring
-
+  
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
+
+  //*in the sign-in or sign up form we want to set the user
+  const {setCurrentUser} = useContext(UserContext) //destructure the setter function from UserContect to run after the sign in below
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,7 +39,8 @@ const SignUpForm = () => {
     try {
       const { user } = await createAuthUserWithEmailAndPassword(email, password);
       createUserDocumentFromAuth(user, { displayName });
-
+      setCurrentUser(user)  //*sets the user in userContext
+      console.log(user)
       resetFormFields();
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {

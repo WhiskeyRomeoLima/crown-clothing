@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
+import { UserContext } from '../../contexts/user.context';
 
 import {
   signInWithGooglePopup,
@@ -22,19 +23,26 @@ const SignInForm = () => {
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
-
+  
   const signInWithGoogle = async () => {
     const { user } = await signInWithGooglePopup();
+    //in signInWithGooglePopup, displayName is populated with a value, where as with signinWithEmailPassword it is not
     await createUserDocumentFromAuth(user);
+    
   };
+
+  //*in the sign-in or sign up form we want to set the user
+  const {setCurrentUser} = useContext(UserContext) //destructure the setter function from UserContect to run after the sign in below
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(email, password);
-      console.log(response);
+      const {user} = await signInAuthUserWithEmailAndPassword(email, password);
+      setCurrentUser(user)  //* fun setCurrentUser here. Sets the user in userContext
+
       resetFormFields();
+      
     } catch (error) {
       switch (error.code) {
         case 'auth/wrong-password':
