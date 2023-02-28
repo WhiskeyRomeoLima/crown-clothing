@@ -1,6 +1,19 @@
 //See the steps for app setup below this code or go to https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0#web-version-9
+//The below import begins the connection process from our app to the configured database in Firebase
+//see firebase config below
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+
+// extract the type of authorizations (provider) we will use in our app
+// see const provider = new GoogleAuthProvider();  below
+import { 
+  getAuth, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged } from 'firebase/auth';
+
 import { getFirestore, doc, getDoc, setDoc} from 'firebase/firestore'
 
 //this was setup in the Firebase console
@@ -35,7 +48,7 @@ provider.setCustomParameters({
 
 //* Go to following url to enable signin methods in the Firebase console.
 //https://console.firebase.google.com/project/crown-clothing-db-44096/authentication/providers
-export const auth = getAuth();
+export const auth = getAuth(); //only need on auth but may need multiple providers
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider); 
 
 
@@ -108,11 +121,7 @@ export const signOutUser = async () => await signOut(auth)
 
 
 
-
-
-
-
-//* createUserDocumentFromAuth: this is response when called from the sign-up-form.component
+//* createUserDocumentFromAuth: this is the response when called from the sign-up-form.component
   //when used by the sign-up-form.component,
   //the line of code above creates the below psuedo users collection pointing at user with an id.  
   //this collection will not be viewable in you firebase console yet. The users collecion was
@@ -195,7 +204,7 @@ import { } from 'firebase/<service>';
 
 //* Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
-  //...
+  //*...
 };
 
 const app = initializeApp(firebaseConfig);
