@@ -1,4 +1,4 @@
-//See the steps for app setup below this code or go to https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0#web-version-9
+//See the steps for app setup at https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0#web-version-9
 //The below import begins the connection process from our app to the configured database in Firebase
 //see firebase config below
 import { initializeApp } from 'firebase/app';
@@ -15,8 +15,18 @@ import {
   onAuthStateChanged } from 'firebase/auth';
 
 import { getFirestore, doc, getDoc, setDoc} from 'firebase/firestore'
+//* use doc to get a document instance.  use getDoc and setDoc to get/set the data within a doc
 
-//this was setup in the Firebase console
+//Google Firestore or Cloud Firestore is a part of the Google Firebase app development platform. 
+//It is a cloud-hosted NoSQL database option for the storage and synchronization of data. 
+//Users can directly access Firestore from their web and mobile applications with native SDKs.
+//see comparison of Firebase vs Firestore at bottom of code
+
+
+//this was setup in the Firebase console, then copied to here
+//use the above to initialize your app
+//* Go to following url to enable signin methods in the Firebase console.
+//https://console.firebase.google.com/project/crown-clothing-db-44096/authentication/providers
 const firebaseConfig = {
   apiKey: 'AIzaSyC1DhQpFSHXWb8HKgFnMI4Pw6OdbCy3CWg',
   authDomain: 'crown-clothing-db-44096.firebaseapp.com',
@@ -26,7 +36,6 @@ const firebaseConfig = {
   appId: '1:341138930160:web:8ec357cb1630ca5a7b4535',
 };
 
-//use the above to initialize your app
 const firebaseApp = initializeApp(firebaseConfig);
 
 //https://firebase.google.com/docs/auth/web/google-signin?authuser=0&hl=en
@@ -46,38 +55,23 @@ provider.setCustomParameters({
   prompt: 'select_account',
 });
 
-//* Go to following url to enable signin methods in the Firebase console.
-//https://console.firebase.google.com/project/crown-clothing-db-44096/authentication/providers
-export const auth = getAuth(); //only need on auth but may need multiple providers
+
+export const auth = getAuth(); //only need one auth but may need multiple providers
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider); 
 
-
-// go to this url to set up firestore database in your Firebase console
-//https://firebase.google.com/docs/database/web/start?hl=en&authuser=0
-//create database in production mode, set the geographical location
-//after db is generated change edit rules to:  allow read, write: if true;
-//see import statement: import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
 //create reference to database in Firestore
-export const db = getFirestore()
-
-//Cloud Firestore stores data in Documents, which are stored in Collections. 
-// Cloud Firestore creates collections and documents implicitly the first time you add data to the document. 
-// You do not need to explicitly create collections or documents.
-//use the following urls
-//choose Cloud Firestore (not Realtime Database): https://firebase.google.com/docs/firestore/manage-data/add-data?hl=en&authuser=0
-//choose Structure data, Add and manage data: [ Add data, Delete data ... ], Read Data and other topics
-//Note use of doc, getDoc, and setDoc from import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
+export const db = getFirestore() //* db points to the actual database in our firebase console
 
 //* start of createUserDocumentFromAuth
 // uses doc, setDoc pattern vs addDoc (see urls above) 
-//this function is called from the sign-in, sign-up, sign-in-form components 
-//who pass the user object from the response object (UserCredentialImpl) again see below this code
+//the below function is called from the sign-in, sign-up, sign-in-form components 
+//which pass the user object from the response object (UserCredentialImpl) again see below this code
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation ={displayName: 'John Doe'}) => {
   const userDocRef = doc(db, 'users', userAuth.uid); // arguments = (database, name of collection, id = userAuth.uid)
   //the above code use the user's id (userAuth.uid) to get a reference to a document in the the db
   //But this document has no value (i.e. user data associated with it)
 
-  const userSnapshot = await getDoc(userDocRef); //return the data associated this document id
+  const userSnapshot = await getDoc(userDocRef); //return the data associated the document id returned above
   // even though we have a user id which points to document with this Id, we do not have a user
 
     //if user data does not exist, create user
@@ -87,6 +81,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     const createdAt = new Date(); //used in setDoc below
 
     try {
+      //setDoc(uid, data object)
       await setDoc(userDocRef, { //adds or updates data in the document
         displayName,
         email,
@@ -99,11 +94,10 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     }
   }
 
-  return userDocRef;
+  return userDocRef; //either a new usedoc or an existing one
 }; 
-//* end of createUserDocumentFrom Auth
 
-//* called from sign-in-form, sign-up-form components
+//* these exports wil be called from sign-in-form, sign-up-form components
 export const createAuthUserWithEmailAndPassword = async (email, password)=>{
   if (!email || !password) return;
 
@@ -118,7 +112,22 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 
 export const signOutUser = async () => await signOut(auth)
 
+//* creating a database in the Firebase console
 
+/*
+
+go to this url to set up firestore database in your Firebase console
+https://firebase.google.com/docs/database/web/start?hl=en&authuser=0
+create database in production mode, set the geographical location
+after db is generated change edit rules to:  allow read, write: if true;
+see import statement: import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
+
+go to this url to set up firestore database in your Firebase console
+https://firebase.google.com/docs/database/web/start?hl=en&authuser=0
+create database in production mode, set the geographical location
+after db is generated change edit rules to:  allow read, write: if true;
+see import statement: import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
+*/
 
 
 //* createUserDocumentFromAuth: this is the response when called from the sign-up-form.component
@@ -223,4 +232,26 @@ Step 4: Step 4: Use a module bundler (webpack/Rollup) for size reduction (SKIPPE
    like the Angular CLI, Next.js, Vue CLI, 
    //*or Create React App. 
    Check out our guide on module bundling for more information.
+*/
+
+/*
+Firebase vs. Firestore Comparison
+                  Firebase	                            Cloud Firestore
+Summary	          App development platform	            NoSQL Scalable Database
+Core Features	    Databases, Cloud Functions, 
+                  Storage, Analytics, A/B Testing, 
+                  Authentication, etc.	                Scalable hosting, multi region deployment, data synchronization.
+Databases	        Firestore and the Real Time Database 	Firestore
+Database Type	    NoSQL	                                NoSQL
+Plans	            Spark and Blaze	                      Spark and Blaze
+Free Tier	        Yes	                                  Yes
+Pricing Model	    Pay as you go	                        Pay as you go
+Pricing	          Depends on the service	              Function of network out, database size, writes, reads, and deletes.
+
+Comparing the Firebase Realtime Database and Firestore here are some differences:
+  Firestore provides better querying and more structured data
+  Firestore is designed to scale
+  Firestore provides multi region deployment
+
+
 */

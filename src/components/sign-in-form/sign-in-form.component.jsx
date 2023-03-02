@@ -18,7 +18,7 @@ const defaultFormFields = {
 
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { email, password } = formFields;
+  const { email, password } = formFields; //destructure off of formFields
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);

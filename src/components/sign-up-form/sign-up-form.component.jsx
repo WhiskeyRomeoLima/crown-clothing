@@ -9,8 +9,6 @@ import Button from '../button/button.component';
 //section 7, lesson 106 - added useContext to import from react
 //and imported the UserContext object from user.context.jsx
 
-
-
 const defaultFormFields = {
   displayName: '',
   email: '',
