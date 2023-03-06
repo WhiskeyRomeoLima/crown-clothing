@@ -55,8 +55,8 @@ provider.setCustomParameters({
   prompt: 'select_account',
 });
 
-
-export const auth = getAuth(); //only need one auth but may need multiple providers
+//only need one auth but may need multiple providers
+export const auth = getAuth(firebaseApp); //tracks whether user is signed in and user persists between page refreshes
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider); 
 
 //create reference to database in Firestore
@@ -66,7 +66,12 @@ export const db = getFirestore() //* db points to the actual database in our fir
 // uses doc, setDoc pattern vs addDoc (see urls above) 
 //the below function is called from the sign-in, sign-up, sign-in-form components 
 //which pass the user object from the response object (UserCredentialImpl) again see below this code
-export const createUserDocumentFromAuth = async (userAuth, additionalInformation ={displayName: 'John Doe'}) => {
+export const createUserDocumentFromAuth = async (
+  userAuth, 
+  //additionalInformation ={displayName: 'John Doe'}) 
+  additionalInformation ={}) => {
+  if (!userAuth) return
+  //else
   const userDocRef = doc(db, 'users', userAuth.uid); // arguments = (database, name of collection, id = userAuth.uid)
   //the above code use the user's id (userAuth.uid) to get a reference to a document in the the db
   //But this document has no value (i.e. user data associated with it)
@@ -111,6 +116,9 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 };
 
 export const signOutUser = async () => await signOut(auth)
+
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback)
+
 
 //* creating a database in the Firebase console
 

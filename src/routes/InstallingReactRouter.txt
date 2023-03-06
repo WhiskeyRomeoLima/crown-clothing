@@ -1,0 +1,3 @@
+
+npm install react-router-dom@6 (not compatible with previous version of react-router, requires React v16.8 or greater)
+

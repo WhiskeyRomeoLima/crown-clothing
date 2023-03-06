@@ -11,16 +11,18 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <UserProvider>
+      <UserProvider> 
         <App />
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+/*Browser Router enables routing in the application (App).
+  We want the following routes:
+    Navigation component : Crown logo to '/' & Shop to shop page & Sign In to signin and signup forms
+*/
+//UserProvider is defined in the context component
+//and provides direct access to the user data to all components wrapped in the component tree
 
 
