@@ -1,6 +1,9 @@
 import { Outlet, Link} from 'react-router-dom'
 import { Fragment, useContext } from 'react';
+import CartIcon from '../../components/cart-icon/cart-icon.component'
+import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component'
 import { UserContext } from '../../contexts/user.context';
+import { CartContext } from '../../contexts/cart.context';
 import {ReactComponent as CrownLogo} from '../../assets/crown.svg'
 import {signOutUser} from '../../utils/firebase/firebase.utils'
 import './navigation.styles.scss'
@@ -17,7 +20,9 @@ For that to happen, the user object has to be stored in and reachable from a use
 */
 const Navigation = () => {
   const {currentUser} = useContext(UserContext) //* We want to read the curreent user to be able to display the sign in or sign up link
-  //That is the currentUser not the setCurrentUser function we used in signIn and signUp forms
+  const {isCartOpen} = useContext(CartContext)
+
+  //above: destructuring currentUser off the UserContext object
   //see detailed explanation below code
   //* note the use of the Outlet component to ensure categories, shop, and sign in forms renders under the Navigation bar
   return (
@@ -33,13 +38,12 @@ const Navigation = () => {
             SHOP
           </Link>
           {
-            currentUser ? (
-              <span className='nav-link' onClick={signOutUser}>SIGN OUT</span>
-            ) : (
-              <Link className='nav-link' to='auth'>SIGN IN</Link>
-            )           
+            currentUser ? (<span className='nav-link' onClick={signOutUser}>SIGN OUT</span>)
+                        : (<Link className='nav-link' to='auth'>SIGN IN</Link>)          
           }
+          <CartIcon />
         </div>
+        {isCartOpen && <CartDropdown />} 
       </div>
       <Outlet />
     </Fragment>

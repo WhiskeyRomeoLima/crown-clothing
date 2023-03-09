@@ -1,6 +1,4 @@
 //See the steps for app setup at https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0#web-version-9
-//The below import begins the connection process from our app to the configured database in Firebase
-//see firebase config below
 import { initializeApp } from 'firebase/app';
 
 // extract the type of authorizations (provider) we will use in our app
@@ -17,13 +15,7 @@ import {
 import { getFirestore, doc, getDoc, setDoc} from 'firebase/firestore'
 //* use doc to get a document instance.  use getDoc and setDoc to get/set the data within a doc
 
-//Google Firestore or Cloud Firestore is a part of the Google Firebase app development platform. 
-//It is a cloud-hosted NoSQL database option for the storage and synchronization of data. 
-//Users can directly access Firestore from their web and mobile applications with native SDKs.
-//see comparison of Firebase vs Firestore at bottom of code
 
-
-//this was setup in the Firebase console, then copied to here
 //use the above to initialize your app
 //* Go to following url to enable signin methods in the Firebase console.
 //https://console.firebase.google.com/project/crown-clothing-db-44096/authentication/providers
@@ -41,15 +33,6 @@ const firebaseApp = initializeApp(firebaseConfig);
 //https://firebase.google.com/docs/auth/web/google-signin?authuser=0&hl=en
 const provider = new GoogleAuthProvider();  //this is a class
 
-//(from the link above) Optional: Specify additional custom OAuth provider parameters 
-//that you want to send with the OAuth request. To add a custom parameter, 
-//call setCustomParameters on the initialized provider with an object 
-//containing the key as specified by the OAuth provider documentation and the corresponding value.
-
-// Sets the OAuth custom parameters to pass in a Google OAuth request for popup and redirect sign-in operations. 
-//Valid parameters include 'hd', 'hl', 'include_granted_scopes', 'login_hint' and 'prompt'. 
-//For a detailed list, check the Google documentation. 
-//Reserved required OAuth 2.0 parameters such as 'client_id', 'redirect_uri', 'scope', 'response_type' and 'state' are not allowed and will be ignored.
 //*forces the user to always select an account - more to come in later lectures
 provider.setCustomParameters({
   prompt: 'select_account',
@@ -64,8 +47,7 @@ export const db = getFirestore() //* db points to the actual database in our fir
 
 //* start of createUserDocumentFromAuth
 // uses doc, setDoc pattern vs addDoc (see urls above) 
-//the below function is called from the sign-in, sign-up, sign-in-form components 
-//which pass the user object from the response object (UserCredentialImpl) again see below this code
+//the below function is called from the user.context which replaced calls in sign-in, sign-up, sign-in-form components 
 export const createUserDocumentFromAuth = async (
   userAuth, 
   //additionalInformation ={displayName: 'John Doe'}) 
@@ -118,7 +100,8 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 export const signOutUser = async () => await signOut(auth)
 
 export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback)
-
+// the above is imported by user.context to centralize where user is updated
+// rather in the individual signin and signup forms
 
 //* creating a database in the Firebase console
 
