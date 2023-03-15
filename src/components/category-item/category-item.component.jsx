@@ -18,7 +18,7 @@ const CategoryItem = ({ category }) => {
   );
 };
 
-export default CategoryItem;
+export default CategoryItem
 
 //* explanation of React style property naming convention
 // normal css for setting background-image:  
@@ -26,7 +26,7 @@ export default CategoryItem;
 //  background-image: url("paper.gif");
 // }
 
-// inline style settting
+// inline style setting
 // style="background-image: url(https://i.ibb.co/R70vBrQ/men.png)"
 
 //*React styling with a style object
