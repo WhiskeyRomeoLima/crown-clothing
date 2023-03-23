@@ -37,9 +37,3 @@ const Checkout = () => {
 };
 
 export default Checkout;
-
-/*
-      {cartItems.map((cartItem) => (
-        <CheckoutItem key={cartItem.id} cartItem={cartItem} />
-      ))}
-*/

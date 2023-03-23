@@ -11,7 +11,7 @@ product
 */
 export const addCartItem = (cartItems, productToAdd) => {
   //find if items is already in the cart
-  const existingCartItem = cartItems.find( //if the callback returns true, find returns the cartItem that returned the true (matching) valaue
+  const existingCartItem = cartItems.find( //if the callback returns true, find returns the cartItem that returned the true
     (cartItem) => cartItem.id === productToAdd.id
   );
 

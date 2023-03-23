@@ -16,4 +16,4 @@ const CartItem = ({ cartItem }) => {
   );
 };
 
-export default CartItem;
+export default CartItem; //imported by cart-dropdown.component

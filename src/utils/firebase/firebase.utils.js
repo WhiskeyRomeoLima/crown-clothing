@@ -99,7 +99,7 @@ export const createUserDocumentFromAuth = async (
 
   const userSnapshot = await getDoc(userDocRef); //return the data associated the document id returned above
   // even though we have a user id which points to document with this Id, we do not have a user
-
+  // Also in user.contex this assures that a database document get created when a new user sign up
     //if user data does not exist, create user
     //this code will not run if the user exist in which case we just want to return userDocRef
   if (!userSnapshot.exists()) { 

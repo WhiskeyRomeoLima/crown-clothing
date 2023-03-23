@@ -1,16 +1,22 @@
-import './category-item.styles.scss';
+import { useNavigate } from 'react-router-dom';
 
-const CategoryItem = ({ category }) => {
-  const {imageUrl, title} = category
+import './directory-item.styles.scss';
+
+const DirectoryItem = ({ category }) => {
+  const { imageUrl, title, route } = category;
+  const navigate = useNavigate();
+
+  const onNavigateHandler = () => navigate(route);
+
   return (
-    <div className="category-container">
+    <div className='directory-item-container' onClick= {onNavigateHandler}>
       <div
-        className="background-image"
+        className='background-image'
         style={{
-          backgroundImage: `url(${imageUrl})`, //object destructuring.  The object is { title, id, imageUrl }
+          backgroundImage: `url(${imageUrl})`,
         }}
       />
-      <div className="category-body-container">
+      <div className='body'>
         <h2>{title}</h2>
         <p>Shop Now</p>
       </div>
@@ -18,7 +24,7 @@ const CategoryItem = ({ category }) => {
   );
 };
 
-export default CategoryItem
+export default DirectoryItem;
 
 //* explanation of React style property naming convention
 // normal css for setting background-image:  

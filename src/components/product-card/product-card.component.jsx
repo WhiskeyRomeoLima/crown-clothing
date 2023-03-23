@@ -1,3 +1,5 @@
+//The product card is the container for a product consisting of image, name, price, and a button
+//ProductCard is imported by category-preview.component, category.component, shop.component
 import { useContext } from 'react';
 
 import { CartContext } from '../../contexts/cart.context';
@@ -26,4 +28,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default ProductCard; //imported from category-preview.component, category.component, shop.component

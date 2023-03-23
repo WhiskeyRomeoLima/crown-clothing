@@ -32,7 +32,7 @@ const SignInForm = () => {
   };
 
   //*in the sign-in or sign up form we want to set the user  !!! no longer need as this functionality move user.context
-  /*
+  /* old code - the folowing imports were removed as we centralized this functionality in firebase.utils (see onAuthStateChangedListener) 
   useContext imported from react, UserContext component imported from '../../contexts/user.context';
   we are calling useContext with UserContext as the argument and getting the setter function for
   setting the current user
@@ -74,7 +74,7 @@ const SignInForm = () => {
   };
 
   return (
-    <div className='sign-up-container'>
+    <div className='sign-in-container'>
       <h2>Already have an account?</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>

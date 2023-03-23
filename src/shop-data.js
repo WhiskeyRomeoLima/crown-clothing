@@ -1,3 +1,4 @@
+//used to simulate available products for each category, to be selected and added or remove from the cart
 const SHOP_DATA = [
   {
     title: 'Hats',

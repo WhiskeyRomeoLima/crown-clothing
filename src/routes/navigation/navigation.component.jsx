@@ -21,9 +21,9 @@ For that to happen, the user object has to be stored in and reachable from a use
 const Navigation = () => {
   const {currentUser} = useContext(UserContext) //* We want to read the curreent user to be able to display the sign in or sign up link
   const {isCartOpen} = useContext(CartContext)
-
   //above: destructuring currentUser off the UserContext object
   //see detailed explanation below code
+
   //* note the use of the Outlet component to ensure categories, shop, and sign in forms renders under the Navigation bar
   return (
     <Fragment>
@@ -44,8 +44,8 @@ const Navigation = () => {
           <CartIcon />
         </div>
         {isCartOpen && <CartDropdown />} 
-      </div>
-      <Outlet />
+      </div> {/* end of navigation div  */}
+      <Outlet /> {/*This is where home, shop, authenication, checkout components live */}
     </Fragment>
   );
 };
